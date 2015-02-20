@@ -93,10 +93,10 @@
       wait_for: port={{ es_transport_port }} delay=35
       when: version_found.json.version.number != '{{ es_version }}'
 
-    - name: Wait for cluster health to return to yellow
+    - name: Wait for cluster health to return to yellow or green
       uri: url=http://localhost:{{ es_http_port }}/_cluster/health method=GET
       register: response
-      until: "response.json.status == 'yellow'"
+      until: "response.json.status == 'yellow' or response.json.status == 'green'"
       retries: 5
       delay: 30
       when: version_found.json.version.number != '{{ es_version }}'
